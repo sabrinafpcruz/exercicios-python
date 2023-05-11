@@ -3,6 +3,3 @@ def exercicio(n):
         for m in range(1,a+1):
             print(m, end=" ")
         print()
-
-
-exercicio(10)

@@ -18,6 +18,8 @@ class ContaBancaria:
         if self.saldo >0 and dinheiro <= self.saldo:
             self.saldo -= dinheiro
             print(f'A conta {self.nome_cliente} sacou R$ {dinheiro} e o saldo é de R$ {self.saldo}')
+            with open("extrato.txt",'a', encoding="utf-8") as arquivo:
+                arquivo.write(f'\n Saque efetuado com a quantia de R$ {dinheiro}')
         elif dinheiro > self.usar_limite:
             print(f'A conta {self.nome_cliente}, ultrapassou seu uso de limite')
         else:
@@ -25,6 +27,8 @@ class ContaBancaria:
             self.usar_limite-= exc
             self.saldo=0
             print(f'A conta de {self.nome_cliente} possui R$ {self.saldo} e um limite de R$ {exc}')
+            with open("extrato.txt",'a', encoding="utf-8") as arquivo:
+                arquivo.write(f'\n Saque efetuado com a quantia de R$ {dinheiro}')
     def depositar(self, dinheiro):
         if self.usar_limite < self.limite:
             diferenca=self.limite-self.usar_limite
@@ -32,9 +36,13 @@ class ContaBancaria:
                 self.saldo=dinheiro-diferenca
                 self.usar_limite+=diferenca
                 print(f'A conta {self.nome_cliente} depositou {dinheiro}')
+                with open("extrato.txt",'a', encoding="utf-8") as arquivo:
+                    arquivo.write(f'\n Depósito efetuado com a quantia de R$ {dinheiro}')
         else:
             self.usar_limite+=dinheiro
             print(f'{self.nome_cliente} depositou R$ {dinheiro}')
+            with open("extrato.txt", 'a', encoding="utf-8") as arquivo:
+                arquivo.write(f'\n Depósito efetuado com a quantia de R$ {dinheiro}')
 
     def verificar(self):
         if self.status == True:
@@ -49,6 +57,7 @@ class ContaBancaria:
         else:
             print(f'A conta de {self.nome_cliente} está ativada')
 
+
     def desativar(self):
         if self.saldo == 0 and self.usar_limite==self.limite:
                 self.status = False
@@ -59,6 +68,12 @@ class ContaBancaria:
         else:
             print(f'Sua conta ainda possui dinheiro, retire antes de desativar a conta')
 
+    def extrato_conta(self):
+        with open("extrato.txt",'a', encoding="utf-8") as arquivo:
+            extrato = arquivo.read()
+        return print("\n--------------------Extrato--------------------\n "
+                     "| Conta de ",{self.nome_cliente}," N° ",{self.num_conta}," |", extrato)
+
 
 p1= ContaBancaria("12", "José","Corrente" )
 p1. ativar()
@@ -67,3 +82,4 @@ p1.depositar(20)
 p1.sacar(30)
 p1.verificar()
 p1.desativar()
+print(p1.extrato_conta())
